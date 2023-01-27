@@ -24,11 +24,7 @@ node --version
 npm --version
 git --version
 ```
-2. Now clone this repository
-```go
-git clone https://github.com/wizzenalum/employee-review-system.git
-```
-3. Change directory to Ecomerce-API
+2. Change directory to Ecomerce-API
 ```go
 cd employee-review-system
 ```
@@ -73,5 +69,12 @@ employee-review-system
     ├── authentication
     └── partials
 ```
+
+
+***Hosted Url Link***(https://vercel.com/saikumarchenna/employee-review-system)
+
+
+
+
 
 
