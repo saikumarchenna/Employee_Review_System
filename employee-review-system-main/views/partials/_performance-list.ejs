@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="/styles/lists.css">
+<% if(userReadUpdate.performanceList.length>0) {%> 
+<div class="performance-list-container">
+    <h1 class="head1">performances</h1>
+    <div class="performance-list">
+        <% for(let performance of userReadUpdate.performanceList) {%> 
+            <div class="performance-container">
+                <form action="/performance/<%=performance.id%>/update" class="performance-form" method="POST">
+                    <input type="hidden" name="reviewBy" defaultValue=<%= locals.user._id %>>
+    
+                    <div class="place-apart">
+                        <div>
+                            <span>review by</apn> <span class="head1"><%=performance.reviewBy.name%></span>
+                        </div>
+                        <% if(locals.urlPath.substring(0,7)==="/admin/" && locals.user.id===performance.reviewBy.id){%>
+                            <a href="/performance/<%=performance.id%>/delete">delete</a>
+                        <%}%>
+                    </div>
+                    <div class="update-form ">
+
+                        <div>
+                            <% if(locals.user.id===performance.reviewBy.id){%>
+                                <span class = "onchange-send-form" contenteditable style="display: block" role="textbox"><%=performance.description%></span>
+                                <input type="hidden" name="description" defaultValue="<%=performance.description%>" />
+                            <%}else{%>
+                                <div><%=performance.description%></div>
+                            <%}%>
+                        </div>
+                        <div>
+                            <% if(performance.ranking>=7){%>
+                                <% if(locals.user.id===performance.reviewBy.id){%>
+                                    <div>ranking </div><input name="ranking" class = "green" defaultValue = "<%=performance.ranking%>" type="number"min="1" max="10" onchange="this.form.submit()">
+                                <%}else{%>
+                                    <div>ranking </div><div class = "green"><%=performance.ranking%></div>
+                                <%}%>
+                            <%}else if(performance.ranking>=4){%>
+                                <% if(locals.user.id===performance.reviewBy.id){%>
+                                    <div>ranking </div><input name="ranking" class = "yellow" defaultValue = "<%=performance.ranking%>" type="number"min="1" max="10" onchange="this.form.submit()">
+                                <%}else{%>
+                                    <div>ranking </div><div class = "yellow"><%=performance.ranking%></div>
+                                <%}%>
+                            <%}else{%>
+                                <% if(locals.user.id===performance.reviewBy.id){%>
+                                    <div>ranking </div><input name="ranking" class = "red" defaultValue = "<%=performance.ranking%>" type="number"min="1" max="10" onchange="this.form.submit()">
+                                <%}else{%>
+                                    <div>ranking </div><div class = "red"><%=performance.ranking%></div>
+                                <%}%>
+                            <%}%>
+                        </div>
+                    </div> 
+                </form>
+                 <!-- creating th/e feed back -->
+                 <% if(locals.urlPath==="/employee"){%>
+                    <form action="/feedback/create" method="post" class="feeedback-form update-form">
+                        <input type="hidden" name="feedbackBy" defaultValue=<%=userReadUpdate.id%> >
+                        <input type="hidden" name="feedbackFor" defaultValue="<%=performance.id%>" >
+                        <textarea name="description" rows="3"></textarea>
+                        <button type="submit">create feedback</button>
+                    </form>
+                <%}%>
+                <% if(performance.feedback.length>0){%>
+                    <h2> feedbacks</h2>
+                    <div class="feedback-list">
+                        <% for(let feedback of performance.feedback){%>
+                            <div>
+                                <% if(locals.urlPath==="/employee"){%>
+                                    <a href="/feedback/<%=feedback.id%>/delete">delete</a>
+                                <%}%>
+                                <form action="/feedback/<%=feedback.id%>/update" method="post">
+                                    <% if(locals.urlPath==="/employee"){%>
+                                        <input type="hidden" name="feedbackBy" defaultValue=<%=userReadUpdate.id%> >
+                                        <input type="hidden" name="feedbackFor" defaultValue="<%=performance.id%>" >
+                                        <!-- <textarea name="description" rows="3" onchange="this.form.submit()"><%=feedback.description%></textarea>   -->
+                                        <div>
+                                            <span class = "onchange-send-form" contenteditable style="display: block" role="textbox"><%=feedback.description%></span>
+                                            <input type="hidden" name="description" defaultValue="<%=feedback.description%>" />
+                                        </div>
+                                    <%}else{%>
+                                        <div class="textarea-replace"><%=feedback.description%></div>
+                                    <%}%>
+                                </form>
+                            </div>
+        
+                        <%}%>
+
+                    </div>
+                <%}%>
+                 
+    
+    
+            </div>
+        <%}%>
+    </div>
+</div>
+<%}%>
